@@ -1,0 +1,19 @@
+.container{
+    scroll-snap-type: y proximity;
+}
+
+html{
+    scroll-snap-type: y mandatory;
+}
+
+.card {
+    scroll-snap-align: start;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+    text-align: center;
+    padding: 0 40px 0 40px;
+    font-size: 2em;
+    font-style: italic;
+}
