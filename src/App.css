@@ -1,13 +1,13 @@
-.container{
-    scroll-snap-type: y proximity;
+.quotchy-container{
+    font-family: 'CoolFont', sans-serif;
+    overflow: hidden;
+}
+body{
+    overflow: hidden;
 }
 
-html{
-    scroll-snap-type: y mandatory;
-}
-
-.card {
-    scroll-snap-align: start;
+.quotchy-card {
+    overflow: hidden;
     height: 100vh;
     display: flex;
     justify-content: center; /* align horizontal */
