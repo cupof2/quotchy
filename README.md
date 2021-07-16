@@ -1,6 +1,6 @@
 ## Quotchy 
 ### Inspirational quotes
-Got some free time? Read some inspiring quotes [here](https://arjay.dev/quotchy)!
+Got some free time? Read some inspiring quotes [here](https://quotchy.netlify.app/)!
 ### Built with:
 * React.js
 ### Demo:
