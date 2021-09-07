@@ -1,12 +1,16 @@
 import './App.css';
-import {bgColors, bgFontColors} from './colors';
-import {useEffect, useRef, useState} from 'react';
+import { bgColors, bgFontColors } from './colors';
+import { useEffect, useRef, useState } from 'react';
 
 const Quote = require('inspirational-quotes');
-const quotes = [];
+const Scroll = require('react-scroll');
+const Element = Scroll.Element;
+const scroller = Scroll.scroller;
 
+const quotes = [];
 let j = 0;
-for(let i = 0; i < 50; i++) {
+
+for(let i = 0; i < 200; i++) {
     const quote = Quote.getRandomQuote();
     if(quote.length <= 50) {
         if(j > bgColors.length)
@@ -29,21 +33,23 @@ function Quotchy() {
     const [nextPage, setNextPage] = useState(1);
     const scrollRef = useRef([]);
 
-    const scroll = (e, touch=false) => {
+    const smoothScroll = (e, touch = false) => {
         if(e.deltaY > 0 || touch) {
             const d = new Date();
             if(coolDown > d.getTime()) {
                 return;
             }
-            
-            coolDown = d.getTime() + (800);
-            if(nextPage > totalQuotes) {
+
+            coolDown = d.getTime() + (1000);
+            if(nextPage >= totalQuotes || totalQuotes === 0) {
                 window.location.reload();
             } else {
-                window.scrollTo({
-                    top: scrollRef.current[nextPage].offsetTop,
-                    behavior: "smooth"
-                });
+                console.log(`scroll to ${scrollRef.current[nextPage].props.name}`)
+                scroller.scrollTo(scrollRef.current[nextPage].props.name, {
+                    duration: 900,
+                    delay: 0,
+                    smooth: 'easeInOutQuart'
+                })
                 setNextPage(nextPage + 1);
             }
         } else if(e.deltaY < 0) {
@@ -52,44 +58,28 @@ function Quotchy() {
     }
 
     useEffect(() => {
-        window.scrollTo({top: -1, behavior: 'smooth'});
+        Scroll.animateScroll.scrollToTop({ smooth: 'easeInOutQuart' });
     }, [])
 
-
     return (
-        <div onTouchEnd={e => scroll(e, true)} onWheel={e => scroll(e)} className="container">
-            {quotes.map((el, idx) => {
-                return <div
-                    className="card"
-                    ref={el => scrollRef.current[idx] = el}
-                    id={"page-" + (idx)}
+        <>
+            {quotes.map((el, idx) => (
+                <Element
                     key={idx}
+                    name={`page-${idx}`}
+                    className='card'
                     style={{
                         backgroundColor: `${quotes[idx].bgColor}`,
                         color: `${quotes[idx].fontColor}`,
                     }}
-                >
+                    ref={el => scrollRef.current[idx] = el}
+                    onWheel={e => smoothScroll(e)}
+                    onTouchEnd={e => smoothScroll(e, true)}>
                     {quotes[idx].quote}
-                </div>
-            })}
-            <div
-                style={
-                    {
-                        fontStyle: "normal",
-                        backgroundColor: '#ffd6a5',
-                        color: 'black',
-                        paddingTop: 0,
-                        paddingBottom: 0
-                    }
-                }
-                className="card"
-                id={"page-" + totalQuotes}
-                ref={el => scrollRef.current[totalQuotes] = el}>
-                Scroll down for a new set of quotes :-)
-            </div>
-        </div>
+                </Element>
+            ))}
+        </>
     );
 }
-
 
 export default Quotchy;
