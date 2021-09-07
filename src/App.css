@@ -1,4 +1,4 @@
-.quotchy-container{
+.container{
     font-family: 'CoolFont', sans-serif;
     overflow: hidden;
 }
@@ -6,7 +6,7 @@ body{
     overflow: hidden;
 }
 
-.quotchy-card {
+.card {
     overflow: hidden;
     height: 100vh;
     display: flex;
